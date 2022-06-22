@@ -24,24 +24,25 @@ class Home extends React.Component {
     });
   }
 
-  // Separating Edit to prevent conflicts in the state
-
-  handleChangeEdit = (event) => {
-    this.setState({
-      editInput: event.target.value
-    });
-  }
-
   handleClick2Edit = (i) => {
     const input = document.getElementById(`textid${i}`);
-    if(input.value.length !== 0){
-      this.setState(this.state.items.splice(i, 1, this.state.editInput));
-      this.setState({editInput: ''});
-    }
+    this.setState(this.state.items.splice(i, 1, input.value));
   }
 
   handleDelete = (i) => {
     this.setState(this.state.items.splice(i, 1));
+  }
+
+  handleDone = (i, j) => {
+    const card = document.getElementById(`cardID${i}`);
+    const button = document.getElementById(`buttonID${i}`);
+    if (card.style.color === 'white'){
+      card.style.color = "#0F2557"
+      button.innerHTML = "Uncheck";
+    } else {
+      card.style.color = "white";
+      button.innerHTML = "Check";
+    }
   }
 
   
@@ -90,17 +91,18 @@ class Home extends React.Component {
                   const modalTarget = `#${idCardModal}`;
                   const modalLabel = `${idCardModal}Label`;
                   const textID = `textid${index}`;
+                  const cardID = `cardID${index}`
+                  const buttonID = `buttonID${index}`
 
                   return (
                   <li style={{listStyle:'none'}} key={index}>
                         {/* Card and Trigger Modal */}
                         <div style={{marginBottom:'10px', marginRight: '25px', cursor:'pointer'}} >
                           <div className="col">
-                            <div className="card shadow" style={{backgroundColor:'#3778C2', color:'white'}} data-bs-toggle='modal' data-bs-target={modalTarget}>
+                            <div className="card shadow" id={cardID} style={{backgroundColor:'#3778C2', color:'white'}} data-bs-toggle='modal' data-bs-target={modalTarget}>
                               <div className="card-body ">
                                 <h5 className="card-title">Tugas ke - {index+1}</h5>
                                 <h2 className="card-text">{item}</h2>
-                                <sub>Click for edit.</sub>
                               </div>
                             </div>
                           </div>
@@ -114,11 +116,12 @@ class Home extends React.Component {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div className="modal-body">
-                                <input required id={textID} type='text' placeholder={item} onChange={this.handleChangeEdit}/>
+                                <input required id={textID} type='text' defaultValue={item}/>
                               </div>
                               <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type='button' className='btn btn-danger' onClick={()=>{this.handleDelete(index)}} data-bs-dismiss="modal">Delete</button>
+                                <button type="button" className="btn btn-success" onClick={()=>{this.handleDone(index)}} data-bs-dismiss="modal" id={buttonID}>Check</button>
                                 <button type="button" className="btn btn-warning" onClick={()=>{this.handleClick2Edit(index)}} data-bs-dismiss="modal">Save changes</button>
                               </div>
                             </div>
