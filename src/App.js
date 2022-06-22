@@ -67,6 +67,7 @@ class Home extends React.Component {
               marginBottom:'20px'
             }}>
             <input
+              required
               type="text"
               value={this.state.textInput}
               onChange={this.handleChange}
