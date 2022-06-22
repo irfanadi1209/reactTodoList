@@ -33,8 +33,11 @@ class Home extends React.Component {
   }
 
   handleClick2Edit = (i) => {
-    this.setState(this.state.items.splice(i, 1, this.state.editInput));
-    this.setState({editInput: ''});
+    const input = document.getElementById(`textid${i}`);
+    if(input.value.length !== 0){
+      this.setState(this.state.items.splice(i, 1, this.state.editInput));
+      this.setState({editInput: ''});
+    }
   }
 
   handleDelete = (i) => {
@@ -86,6 +89,7 @@ class Home extends React.Component {
                   const idCardModal = `modalCard${index}`;
                   const modalTarget = `#${idCardModal}`;
                   const modalLabel = `${idCardModal}Label`;
+                  const textID = `textid${index}`;
 
                   return (
                   <li style={{listStyle:'none'}} key={index}>
@@ -110,7 +114,7 @@ class Home extends React.Component {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div className="modal-body">
-                                <input required type='text' placeholder={item} onChange={this.handleChangeEdit}/>
+                                <input required id={textID} type='text' placeholder={item} onChange={this.handleChangeEdit}/>
                               </div>
                               <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
